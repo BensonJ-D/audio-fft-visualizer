@@ -52,3 +52,34 @@ target_compile_definitions(${PROJECT_NAME}
     PRIVATE 
     PNG_SKIP_SETJMP_CHECK
     PNG_DEBUG=0)
+
+find_package(Catch2 3 REQUIRED)
+# Create a library for the FFT implementation
+add_library(fft_lib STATIC
+    src/transform/fast_fourier_transform.cpp)
+target_include_directories(fft_lib
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}/src)
+
+# Test executable
+file(GLOB_RECURSE TEST_SOURCES
+    "test/*.cpp"
+)
+add_executable(tests 
+    ${TEST_SOURCES})
+    
+target_include_directories(tests
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/glad/include  
+    ${HOMEBREW_PREFIX}/include
+)
+target_link_libraries(tests 
+    PRIVATE 
+    Catch2::Catch2WithMain
+    fft_lib)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(tests)

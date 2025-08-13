@@ -8,7 +8,7 @@ namespace audio {
         std::lock_guard<std::mutex> lock(mThreadMutex);
         
         if(size > getAvailableWrite()) {
-            return false; // Not enough space to write
+            return false;
         }
 
         size_t firstWrite = std::min(size, mBuffer.size() - mWritePosition);
@@ -33,7 +33,6 @@ namespace audio {
         std::copy(mBuffer.begin() + mReadPosition, mBuffer.begin() + mReadPosition + firstRead, data);
 
         if (firstRead < size) {
-            // Wrap around to beginning of buffer
             std::copy(mBuffer.begin(), mBuffer.begin() + (size - firstRead), data + firstRead);
         }
 
