@@ -5,8 +5,8 @@
 #include "render/domain/shader.hpp"
 
 namespace render {
-    RenderManager::RenderManager(core::WindowManager *pWindowManager, std::string vertexShader, std::string fragmentShader, size_t audioVisualiserMaxDataPoints) : 
-        mpWindowManager(pWindowManager), mShader(vertexShader, fragmentShader), mLineMaximumDataPoints(audioVisualiserMaxDataPoints) 
+    RenderManager::RenderManager(core::WindowManager& windowManager, std::string vertexShader, std::string fragmentShader, size_t audioVisualiserMaxDataPoints) : 
+        mWindowManager(windowManager), mShader(vertexShader, fragmentShader), mLineMaximumDataPoints(audioVisualiserMaxDataPoints) 
     {
         generateBuffers();
         mShader.use();
@@ -20,7 +20,7 @@ namespace render {
         glBufferData(GL_ARRAY_BUFFER, mAudioVisualizerDataPoints.size() * sizeof(float), mAudioVisualizerDataPoints.data(), GL_STREAM_DRAW);
         glDrawArrays(GL_LINE_STRIP, 0, mAudioVisualizerDataPoints.size() / 2);
         
-        glfwSwapBuffers(mpWindowManager->getWindow());
+        glfwSwapBuffers(mWindowManager.getWindow());
         glfwPollEvents();
     }
     

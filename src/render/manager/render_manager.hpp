@@ -14,7 +14,7 @@
 namespace render {
     class RenderManager {
         private:
-            core::WindowManager *mpWindowManager;        
+            core::WindowManager& mWindowManager;        
             render::Shader mShader;
             
             GLuint mLineVertexArrayObj;
@@ -28,12 +28,13 @@ namespace render {
             void generateBuffers();
         
         public:
-            RenderManager(core::WindowManager *pWindowManager, std::string vertexShader, std::string fragmentShader, size_t audioVisualiserMaxDataPoints = 2048);
+            RenderManager(core::WindowManager& windowManager, std::string vertexShader, std::string fragmentShader, size_t audioVisualiserMaxDataPoints = 2048);
             void renderScene();
             void cleanBuffers();
 
-            std::vector<float>* getAudioVisualizerDataPointsPointer() {
-                return &mAudioVisualizerDataPoints;
+            // Return a copy of the audio visualizer data points
+            std::vector<float>& getAudioVisualizerDataPoints() {
+                return mAudioVisualizerDataPoints;
             }
     };
 }

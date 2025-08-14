@@ -20,16 +20,16 @@ namespace core {
 
     int run()
     {
-        core::WindowManager *pWindowManager = new core::WindowManager();
-        pWindowManager->createWindow(800, 600);
+        WindowManager windowManager = WindowManager();
+        windowManager.createWindow(800, 600);
         
-        if(pWindowManager->getWindow() == NULL) {
+        if(windowManager.getWindow() == NULL) {
             exit(1);
             return 1;
         }
         
-        render::RenderManager *pRenderManager = new render::RenderManager(
-                                                         pWindowManager,
+        render::RenderManager renderManager = render::RenderManager(
+                                                         windowManager,
                                                          "res/shaders/vertex_shader.vs",
                                                          "res/shaders/fragment_shader.fs"
                                                      );
@@ -54,19 +54,19 @@ namespace core {
             std::cout << "Audio capture started successfully" << std::endl;
         }
 
-        while (pWindowManager->isRunning()) {
+        while (windowManager.isRunning()) {
             {
                 std::lock_guard<std::mutex> lock(visualMutex);
                 if (!visualBuffer.empty()) {
-                    render::AudioVisualizer::update(visualBuffer, pRenderManager->getAudioVisualizerDataPointsPointer());
+                    render::AudioVisualizer::update(visualBuffer, renderManager.getAudioVisualizerDataPoints());
                 }
             }
 
-            pRenderManager->renderScene();
+            renderManager.renderScene();
         }
         
-        pRenderManager->cleanBuffers();
-        pWindowManager->destroyWindow();
+        renderManager.cleanBuffers();
+        windowManager.destroyWindow();
         glfwTerminate();
         exit(EXIT_SUCCESS);
         

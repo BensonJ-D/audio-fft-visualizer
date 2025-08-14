@@ -10,8 +10,12 @@ namespace transform {
     class FFT {
         friend class FFTTest;
     public:
-        FFT() {}
+        FFT(size_t dataSize) : mDataSize(dataSize) {}
     private:
+        size_t mDataSize;
+        std::vector<size_t> mBitReversalTable;
+
+        void generateBitReversalTable();
         void reverseBits(ComplexVector& data);
     };
 }

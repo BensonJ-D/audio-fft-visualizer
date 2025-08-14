@@ -6,6 +6,6 @@
 namespace render {
     class AudioVisualizer {
     public:        
-        static void update(const std::vector<float>& audioInput, std::vector<float>* visualizerOutput);
+        static void update(const std::vector<float>& audioInput, std::vector<float>& visualizerOutput);
     };
 }
